@@ -16,7 +16,7 @@ for j = 1:length(nollstallen)
     
     % Kontrollera derivatan vid nollstället
     g_0 = fixpunktsformeln_derivata(nollstallen(j));
-    fprintf('Derivatan vid nollstället %.2f: g''(x*) = %.6f\n', nollstallen(j), g_prime);
+    fprintf('Derivatan vid nollstället %.2f: g''(x*) = %.6f\n', nollstallen(j), g_0);
     
     if abs(g_0) < 1
         fprintf('=> Iterationen förväntas konvergera.\n');

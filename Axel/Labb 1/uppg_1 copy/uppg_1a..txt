@@ -1,9 +1,6 @@
 % Definiera intervallet
 x = 0:0.01:3;
 
-% Beräkna nedböjningen för hela vektorn x
-% uzx = nedbojning(x);
-
 % Plotta funktionen
 plot(x, nedbojning(x), 'LineWidth', 2);
 xlabel('x');
