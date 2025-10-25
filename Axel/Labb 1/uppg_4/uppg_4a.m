@@ -16,6 +16,19 @@ for j = 1:length(y0)                 % för varje partikel
     end
 end
 
+% Skriv ut slutpositioner
+x(end-3, end)
+y(end-3, end)
+
+x(end-2, end)
+y(end-2, end)
+
+x(end-1, end)
+y(end-1, end)
+
+x(end, end)
+y(end, end)
+
 % Rita partikelbanorna
 figure;
 plot(x.', y.', 'LineWidth', 1.2);   % transponera för att rita varje bana
