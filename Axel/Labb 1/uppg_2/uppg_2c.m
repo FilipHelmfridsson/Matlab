@@ -24,7 +24,7 @@ for i = 1:length(x0_list)
         iteration_amount = iteration_amount + 1;
     end
 
-    % Kontrollera om xn redan finns i roots_found
+    % Kontrollera om xn redan finns i roots_found (undvik dubletter)
     is_new_root = true;
     for r = roots_found
         if abs(xn - r) < 1e-6
@@ -33,6 +33,7 @@ for i = 1:length(x0_list)
         end
     end
 
+    % Spara giltiga rötter
     if is_new_root && xn >= 0 && xn <= L  % Endast rötter inom intervallet
         roots_found(end+1) = xn;
     end
