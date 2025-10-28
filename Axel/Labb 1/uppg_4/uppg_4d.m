@@ -2,7 +2,7 @@ clear; clc;
 
 R = 2;             % cylinderns radie
 T = 12;            % sluttid
-dt = 0.1;          % tidssteg
+dt = 0.05;          % tidssteg
 N = 200;           % antal punkter i startformationen
 center = [-8, 1.2];% centrum för cirkeln
 r = 0.8;           % Startcirkels radie

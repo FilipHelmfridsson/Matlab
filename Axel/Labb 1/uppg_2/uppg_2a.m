@@ -1,4 +1,4 @@
-xn = 1.8;  % Startvärde nära ett nollställe
+xn = 1.94;  % Startvärde nära ett nollställe
 target_diff = 5e-10;  % Felgräns enligt uppgiften
 
 diff = Inf;

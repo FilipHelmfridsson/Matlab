@@ -1,6 +1,6 @@
 clear; clc;
 
-steps_amount = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]; % olika n att testa
+steps_amount = 512;  % 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192 olika n att testa
 T = 24;              % Slutpunkt för intervallet
 y0 = 2;              % Begynnelsevillkor
 

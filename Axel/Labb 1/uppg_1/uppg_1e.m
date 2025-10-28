@@ -1,5 +1,5 @@
 x0 = 1.94; % Egentligen 1.95
-target_diff = 5e-4;
+target_diff = 5e-4; % 0.0005
 
 diff = Inf;
 iteration_amount = 0;
