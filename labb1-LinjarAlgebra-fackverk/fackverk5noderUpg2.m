@@ -25,12 +25,12 @@ figure;
 grid on; 
 axis equal; 
 hold on;
-fackverksplot(xnod, ynod, bars);    % hjälpfunktion fackverksplot
+%fackverksplot(xnod, ynod, bars);    % hjälpfunktion fackverksplot
 
 
 
 %------------ Matris för stiffnes (styvhet)  --------------------------
-A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
+A = genstiffnmatr(xnod, ynod, bars) % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
 % SKAPAR EN MATRIS A MED STORLEK 6X6 FÖR DE 3 FRIA NODERNA 3,4,5 
 
 
@@ -53,10 +53,20 @@ xdef = xnod + xDisplacement;
 ydef = ynod + yDisplacement;
 
 % --- Rita deformerad struktur -------------------------------
-fackverksplot(xdef, ydef, bars);
-title('Fackverk före  och efter deformation');
+%fackverksplot(xdef, ydef, bars);
+%title('Fackverk före  och efter deformation');
 
 norm([1 2; 3 4])
 cond([1 2; 3 4]) % Konditionstalet för matris A
 % Ett högt konditionstal indikerar att matrisen är nära 
 % singulär och att lösningen kan vara känslig för små förändringar i indata.
+
+A = [1 2; 3 4];
+A            % enklast (utan semikolon)
+disp(A)      % alternativt
+%imagesc(A);            % färglägg efter värden
+%axis equal tight;
+%colorbar;              % skala till höger
+%title('imagesc av A');
+%heatmap(A);
+%title('heatmap av A');

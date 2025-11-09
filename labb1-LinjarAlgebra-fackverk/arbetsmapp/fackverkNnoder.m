@@ -10,33 +10,28 @@ close all   % Stänger alla figurer
 
 % -----------------Sätt startvärden -----------
 % Ange antal Noder
-N = 15; % Måste vara ojämnt antal
+N = 15  % Måste vara ojämnt antal
 % Ange yttersta nodens X värde
-ysista = 0.5;
-xmax = 1.0;
+xmax = 0.5
+
 
 % ---  Definiera Nodkoordinater -----------------------------------------
 % Räkna ut x och y koordinater för noderna fördela jämnt över längden xmax
 
-nodavstandxled = xmax / ((N-1)/2) %avstånd mellan noder i x-led
+nodavstand = xmax / ((N-1)/2) %avstånd mellan noder i x-led
 xnod = zeros(N,1);
 xnod(1:2) = 0; % Första och andra noden vid väggen
 for i = 3:N
-    xnod(i) = xnod(i-2) + nodavstandxled; % jämna noder på samma x som näst föregående
+    xnod(i) = xnod(i-2) + nodavstand; % jämna noder på samma x som näst föregående
 end
 xnod
 
-% Sista nodens y-koordinat är 0.5
-nodavstandyledbaruppe = (1-ysista) / ((N-1)/2)
-nodavstandyledbarnere = (0.8-ysista) / ((N-1)/2)
 ynod = zeros(N,1);
-ynod(1) = 1; % Första noden uppe vid väggen
-ynod(2) = 0.8; % Andra noden nere vid väggen
-for i = 3:N
-    if mod(i,2) ~= 0 % ojämna noder
-        ynod(i) = ynod(i-2)-nodavstandyledbaruppe; % ojämna noder uppe
-    else % jämna noder
-        ynod(i) = ynod(i-2)-nodavstandyledbarnere;
+for i = 1:N
+    if mod(i,2) ~= 0
+        ynod(i) = 1; % ojämna noder uppe
+    else
+        ynod(i) = 0.8; % jämna noder nere
     end
 end
 ynod
