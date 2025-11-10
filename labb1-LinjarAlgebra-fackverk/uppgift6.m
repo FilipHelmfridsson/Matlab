@@ -13,6 +13,7 @@ n =100; % antal iterationer;
 %==============================
 load('kran1.mat')
 whos % => A Size 250x250 då 127 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
+A = sparse(A);
 %Skapa en b vektor med rätt storlek
 %b = zeros(250,1); %250  A's size är 250x250
 b = rand(250,1); %250  A's size är 250x250
@@ -30,6 +31,7 @@ fprintf('Medeltid kran 1 = %.4f s\n', time/n);
 %==============================
 load('kran2.mat')
 %whos % => A Size 696x696 då 63 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
+A = sparse(A);
 %Skapa en b vektor med rätt storlek
 %b = zeros(696,1);
 b = rand(696,1);
@@ -47,6 +49,7 @@ fprintf('Medeltid kran 2 = %.4f s\n', time/n);
 %==============================
 load('kran3.mat')
 %whos % => A Size 250x250 då 127 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
+A = sparse(A);
 %Skapa en b vektor med rätt storlek
 %b = zeros(1502,1);
 b = rand(1502,1);
@@ -64,6 +67,7 @@ fprintf('Medeltid kran 3 = %.4f s\n', time/n);
 %==============================
 load('kran4.mat')
 %whos % => A Size 2856x2856 då 1429 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
+A = sparse(A);
 %Skapa en b vektor med rätt storlek
 %b = zeros(2856,1); 
 b = rand(2856,1);
@@ -98,7 +102,12 @@ p = polyfit(log(size), log(tider), 1) % 1 betyder linjär passning
 lutning = p(1); % Lutningen är första koefficienten
 fprintf('Uppskattad exponent α = %.2f\n', lutning);   
 
+%Medeltid kran 1 = 0.0003 s
+%Medeltid kran 2 = 0.0005 s
+%Medeltid kran 3 = 0.0015 s
+%Medeltid kran 4 = 0.0030 s
 
+% jämfört med uppgift 4
 %Medeltid kran 1 = 0.0072 s
 %Medeltid kran 2 = 0.0197 s
 %Medeltid kran 3 = 0.0817 s

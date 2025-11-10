@@ -91,7 +91,7 @@ b = zeros(2*(N-2),1) % b är kraftvektorn i noden 3 den fria noden b= [Fx;Fy] x 
 % b betyder kraftvektor för fria noder så den börjar först vid nod 3
 % b har storlek 2*(N-2) eftersom varje nod har två frihetsgrader
 % b = [Fx3 Fx4 ... FxN Fy3 Fy4 ... FyN] ger b(2*(N-2)) = FyN
-b((N-2)+(N-2)) = -0 % Klarar ingen last alls
+b(end) = -0.0000000000001 % Klarar ingen last alls
 % Sätter en nedåtriktad kraft i y-led i den sista fria noden
 
 % --- Lös systemet A*z = b ----------------------------------

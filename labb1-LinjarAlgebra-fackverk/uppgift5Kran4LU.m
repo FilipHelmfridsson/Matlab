@@ -7,6 +7,9 @@ close all   % Stänger alla figurer
 
 load('kran4.mat')
 whos
+% -------------- LU -faktorisering ------
+A = lu(A);
+
 %Matris storlek 2856
 N=1430 % 2856/2+2 Antal noder
 
@@ -49,4 +52,4 @@ ylabel('Förflyttning av sista noden nodnummer N');
 fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
 fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
 
-% Tid 545s
+% tid 1.1079e+03 s

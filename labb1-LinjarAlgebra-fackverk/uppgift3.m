@@ -1,4 +1,4 @@
-%=== Litet fackverk med N noder =====
+%=== fackverk med N noder =====
 
 % För att hitta hjälpfunktioner
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk') 
@@ -10,7 +10,7 @@ close all   % Stänger alla figurer
 
 % -----------------Sätt startvärden -----------
 % Ange antal Noder
-N = 15; % Måste vara ojämnt antal räkna bort baren som är väggen
+N = 17; % Måste vara ojämnt antal räkna bort baren som är väggen
 % Ange yttersta nodens X värde
 ysista = 0.5;
 xmax = 1.0;
@@ -18,8 +18,8 @@ xmax = 1.0;
 % ---  Definiera Nodkoordinater -----------------------------------------
 
 % Räkna ut x och y koordinater för noderna 
-%variant = "xlikaavstand";
-variant = "xglesare"; 
+variant = "xlikaavstand";
+%variant = "xglesare"; 
 
 % fördela jämnt över längden xmax
 if (variant=="xlikaavstand")
@@ -75,8 +75,8 @@ ynod
 
 
 % --- Bars ------------------------------------------------
-modell=1;
-% Modell 1
+modell=3;
+% Modell 1.  -   Blev fel se figur
 % 1-3---5---7---9 --11--13--15
 %  / \ / \ / \ / \  / \ / \ / \
 % 2---4---6---8---10--12--14--16
@@ -129,9 +129,9 @@ elseif modell ==2
 elseif modell ==3
     % Modell 3
     %1---3---5---7---9
-    %  / | / | / | / |
-    % /  |/  |/  |/  |
-    %2--4--6--8--10--11
+    %  / | / | / | / | \
+    % /  |/  |/  |/  |.  \
+    %2-- 4- -6- -8- -10--11
     % Räknar ut stänger mellan noderna
     bars = [];
     for i = 1:N-2
