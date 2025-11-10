@@ -8,7 +8,7 @@ close all   % Stänger alla figurer
 load('kran4.mat')
 whos
 % -------------- LU -faktorisering ------
-A = lu(A);
+[L,U, P] = lu(A);
 
 %Matris storlek 2856
 N=1430 % 2856/2+2 Antal noder
@@ -21,7 +21,8 @@ for i = ceil(1429:2856)
     %fprintf('%d\n', i)
     b = zeros(2*(1430-2),1);
     b(i) = -10; % applicera en last på -10 N i y-led på nod i
-    z = A\b;
+    y = L\(P*b);
+    z = U\y;
     % --- Förskjutningar och ny geometri -------------------------
     xdelta = zeros(1430,1); ydelta = zeros(1430,1);   % Skapar en nollmatris för Δx och Δy
     xdelta(3:N) = z(1:(1430-2));              % Δx för fria noder
@@ -52,4 +53,4 @@ ylabel('Förflyttning av sista noden nodnummer N');
 fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
 fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
 
-% tid 1.1079e+03 s
+% 27.25
