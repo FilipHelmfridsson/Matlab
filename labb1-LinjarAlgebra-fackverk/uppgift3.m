@@ -18,39 +18,14 @@ xmax = 1.0;
 % ---  Definiera Nodkoordinater -----------------------------------------
 
 % Räkna ut x och y koordinater för noderna 
-variant = "xlikaavstand";
-%variant = "xglesare"; 
 
 % fördela jämnt över längden xmax
-if (variant=="xlikaavstand")
-    nodavstandxled = xmax / ((N-1)/2); %avstånd mellan noder i x-led
-    xnod = zeros(N,1); % Skapar en nollmatris för x koordinater
-    xnod(1:2) = 0; % Första och andra noden vid väggen
-    for i = 3:N
-        xnod(i) = xnod(i-2) + nodavstandxled; % jämna noder på samma x som näst föregående
-    end
- 
-elseif (variant=="xgleasare")
-    % ===== Tätare noder nära väggen =====
-    C = (N-3)/2;           % antal fack (ej inkl spets)
-    p = 0.5;               % <1 => tätare nära väggen
-    
-    t = linspace(0,1,C+2); % +2 så sista värdet är spetsens x
-    xcol = xmax * (1 - (1 - t).^p);
-    
-    xnod = zeros(N,1);
-    xnod(1:2) = 0;         % väggen
-    
-    % fackens vertikalpar (INTE spetsen)
-    for k = 2:C+1          % slutar innan sista xcol
-        xnod(2 + 2*(k-2) + 1) = xcol(k);   % övre
-        xnod(2 + 2*(k-2) + 2) = xcol(k);   % undre
-    end
-    
-    % EN spetsnod längst ut
-    xnod(end) = xcol(end); % = xmax
+nodavstandxled = xmax / ((N-1)/2); %avstånd mellan noder i x-led
+xnod = zeros(N,1); % Skapar en nollmatris för x koordinater
+xnod(1:2) = 0; % Första och andra noden vid väggen
+for i = 3:N
+    xnod(i) = xnod(i-2) + nodavstandxled; % jämna noder på samma x som näst föregående
 end
-
 xnod(N) = xmax; % Sista noden längst ut så inget avrundningsfel blir
 xnod
 
@@ -74,37 +49,66 @@ ynod
 
 
 
-% --- Bars ------------------------------------------------
-modell=3;
-% Modell 1.  -   Blev fel se figur
-% 1-3---5---7---9 --11--13--15
-%  / \ / \ / \ / \  / \ / \ / \
-% 2---4---6---8---10--12--14--16
+% --- Bars ---Välj Modell ---------------------------------------------
+modell=4;
+
+
+% Modell 1. - Rak
+% 1-3---5---7---9 --11--13
+%  / \ / \ / \ / \  / \ / \
+% 2---4---6---8---10--12--14
+%                       \ |
+%                        15
 % Räknar ut stänger mellan noderna
 bars = [];
 if modell ==1
-    for i = 1:N-2
+    % kräver en annan xnod uppsättning för att bli rätt
+    nodavstandxled = xmax / (N-3); %avstånd mellan noder i x-led
+    xnod = zeros(N,1); % Skapar en nollmatris för x koordinater
+    xnod(1:2) = 0; % Första och andra noden vid väggen
+    for i = 3:N
+        xnod(i) = xnod(i-1) + nodavstandxled; % jämna noder på samma x som näst föregående
+    end
+    xnod(N) = xmax; % Sista noden längst ut så inget avrundningsfel blir
+    xnod
+
+    ynod = zeros(N,1);
+    for i = 1:N-1
+        if mod(i,2) ~= 0 % ojämna noder
+            ynod(i) = 1;
+        else % jämna noder
+            ynod(i) = 0.8
+        end
+    end
+    ynod(N) = ysista; %sista noden
+    ynod
+
+
+    for i = 1:N-3
         bars = [bars;i i+2]; % horisontella stänger
         if mod(i,2) == 0 % jämn nod
-            bars = [bars;i i+1]; % sneda stänger uppåt
+            bars = [bars;i i+1]; % sneda stänger /
             if i~=1
-                bars = [bars;i i-1]; % vertikal nod uppåt
+                bars = [bars;i i-1]; % sneda stänger \
             end
         end
     end
     %missar sista sneda och raka noden lägger till den här:
     bars = [bars;N-1 N];
     bars = [bars;N-1 N-2];
+    bars = [bars;N-3 N];
     % Tar bort bar mellan nod 1 och nod 2 (väggen)
     index = find(all(bars == [2 1], 2));
     bars(index, :) = [];
 
 elseif modell ==2
-    % Modell 2
-    %1---3---5---7---9---11---13
-    % \  |\  |\  |\  | \  |\  | \
-    %  \ | \ | \ | \ |  \ | \ |  \   
-    %2---4---6---8---10---12--14--15
+    % Modell 2 - Lutande
+    %1---3---5---7---9---11---13 --15
+    % \  |\  |\  |\  | \  |\  | \   |
+    %  \ | \ | \ | \ |  \ | \ |  \  | 
+    %2---4---6---8---10---12--14-- 16
+    
+
     % Räknar ut stänger mellan noderna
     bars = [];
     for i = 1:N-2
@@ -127,7 +131,7 @@ elseif modell ==2
     bars(index, :) = [];
 
 elseif modell ==3
-    % Modell 3
+    % Modell 3 Lutande
     %1---3---5---7---9
     %  / | / | / | / | \
     % /  |/  |/  |/  |.  \
@@ -149,6 +153,99 @@ elseif modell ==3
     % Tar bort bar mellan nod 1 och nod 2 (väggen)
     index = find(all(bars == [2 1], 2));
     bars(index, :) = [];
+
+elseif modell ==4
+    % Modell 5 - Rak
+    %1---3---5---7---9---11--13---15
+    % \  |\  |\  |\  |\   |\  |\  |
+    %  \ | \ | \ | \ | \  | \ | \ |
+    %2-- 4- -6- -8- -10--12--14---16
+    %                          \  |
+    %                            17
+    nodavstandxled = xmax / ((N-3)/2); %avstånd mellan noder i x-led
+    xnod = zeros(N,1); % Skapar en nollmatris för x koordinater
+    xnod(1:2) = 0; % Första och andra noden vid väggen
+    for i = 3:N-3
+        xnod(i) = xnod(i-2) + nodavstandxled; % jämna noder på samma x som näst föregående
+    end
+    xnod(N-2:N) = xmax; % Sista noden längst ut så inget avrundningsfel blir
+    xnod
+
+    ynod = zeros(N,1);
+    for i = 1:N-1
+        if mod(i,2) ~= 0 % ojämna noder
+            ynod(i) = 1;
+        else % jämna noder
+            ynod(i) = 0.8
+        end
+    end
+    ynod(N) = ysista; %sista noden
+    ynod
+
+    bars = [];
+    for i = 1:N-3
+        bars = [bars;i i+2]; % horisontella stänger
+        if mod(i,2) ~= 0 % ojämna node
+            bars = [bars;i i+3]; 
+            if i < N 
+                bars = [bars;i i+1]; % sneda stänger uppåt frammåt
+            end
+        end
+    end
+    %missar sista sneda och raka noden lägger till den här:
+    bars = [bars;N-2 N-1];
+    bars = [bars;N-1 N];
+    bars = [bars;N-3 N];
+    % Tar bort bar mellan nod 1 och nod 2 (väggen)
+    index = find(all(bars == [1 2], 2));
+    bars(index, :) = [];
+
+
+elseif modell ==5
+    % Modell 5 - Rak
+    %1---3---5---7---9---11--13---15
+    %  / | / | / | / |  / |  /|  /|
+    % /  |/  |/  |/  | /  | / |/  |
+    %2-- 4- -6- -8- -10--12--14---16
+    %                          \  |
+    %                            17
+    nodavstandxled = xmax / ((N-3)/2); %avstånd mellan noder i x-led
+    xnod = zeros(N,1); % Skapar en nollmatris för x koordinater
+    xnod(1:2) = 0; % Första och andra noden vid väggen
+    for i = 3:N-3
+        xnod(i) = xnod(i-2) + nodavstandxled; % jämna noder på samma x som näst föregående
+    end
+    xnod(N-2:N) = xmax; % Sista noden längst ut så inget avrundningsfel blir
+    xnod
+    
+    ynod = zeros(N,1);
+    for i = 1:N-1
+        if mod(i,2) ~= 0 % ojämna noder
+            ynod(i) = 1;
+        else % jämna noder
+            ynod(i) = 0.8
+        end
+    end
+    ynod(N) = ysista; %sista noden
+    ynod
+
+    bars = [];
+    for i = 1:N-2
+        bars = [bars;i i+2]; % horisontella stänger
+        if mod(i,2) == 0 %  dvs jämn nod
+            bars = [bars;i i-1]; % raka stänger uppåt
+            if i >= 2
+                bars = [bars;i i+1]; % sneda stänger uppåt frammåt
+            end
+        end
+    end
+    %missar sista sneda och raka noden lägger till den här:
+    bars = [bars;N-1 N];
+    bars = [bars;N-3 N];
+    % Tar bort bar mellan nod 1 och nod 2 (väggen)
+    index = find(all(bars == [2 1], 2));
+    bars(index, :) = [];
+
 end
 
 % Skriver ut stängerna
@@ -160,32 +257,17 @@ figure; grid on; axis equal; hold on
 title('Fackverk före deformation')
 fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverksplot
 
-
-
-%------------ Matris för stiffnes (styvhet)  --------------------------
+%------------ Matris för styvhet och längförskjutningar  --------------------------
 A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
 
-A = sparse(genstiffnmatr(xnod, ynod, bars));
-fprintf('nnz(A)=%d  sum(A)=%.6g  condest(A)=%.2e\n', nnz(A), full(sum(A(:))), cond(A));
-
-
-% ---  Kraftvektor b (nedåt last i nod 3) ---------------------
+% ---  Kraftvektor b (nedåt last i nod N) ---------------------
 N = length(xnod);           % N = antal noder
-b = zeros(2*(N-2),1);       % b är kraftvektorn i noden 3 den fria noden b= [Fx;Fy] x resp y led
-% Skapar en nollmatris med nollor zeros (2,1) = [0;0]
-% N-2 för nod 1 och nod2 är fixerade vid väggen
-% b har storlek 2*(N-2) eftersom varje nod har två frihetsgrader
-% b betyder kraftvektor för fria noder
-% Hitta noden med största x (spetsen)
-[~, idxMaxX] = max(xnod);
-% Skapa kraftvektor
-b((N-2) + (idxMaxX - 2)) = -10;  % nedåtriktad kraft på spetsen
-%b((N-2)+(N-2)) = -10;  % FyN - ( negativt nedåt) = Summan av krafter i y-led 
-% kraftvektorn b = [0;-10] för vårt fackverk
+b = zeros(2*(N-2),1);       % b är kraftvektorn i fria noder b= [Fx1..  Fy1.. FyN]
+b(end) = -1;  % nedåtriktad kraft på spetsen
 
 % --- Lös systemet A*z = b ----------------------------------
 z = A\b; % Detta ger en lösning för z, där z är vektor med förskjutningar för fria noder
-% z = [Δx3; Δy3] för vårt lilla fackverk
+
 
 % --- Förskjutningar och ny geometri -------------------------
 xdelta = zeros(N,1); ydelta = zeros(N,1);   % Skapar en nollmatris för Δx och Δy
@@ -214,21 +296,21 @@ end
 relChange = deltaL ./ len0;
 
 % --- Rita färgkodat fackverk --------------------------------
-title('Fackverk efter deformation – färgkodat efter längdförändring')
+title("Fackverk efter deformation färgkodat efter längdförändring modell "+modell)
 for k = 1:numBars
     i = bars(k,1); j = bars(k,2);
 
-    if relChange(k) > 1e-3        % Stor förlängning → RÖD
+    if relChange(k) > 0.001        % Stor förlängning → RÖD
         col = [1 0 0];
-    elseif relChange(k) > 1e-4    % Liten förlängning → ORANGE
+    elseif relChange(k) > 0.0001    % Liten förlängning → ORANGE
         col = [1 0.5 0];
-    elseif relChange(k) > -1e-4   % Nästan oförändrad → BLÅ
+    elseif relChange(k) > -0.0001   % Nästan oförändrad → BLÅ
         col = [0 0 1];
     else                          % Negativ (tryck) → GRÖN
         col = [0 0.7 0];
     end
 
-    plot([xdef(i) xdef(j)], [ydef(i) ydef(j)], 'Color', col, 'LineWidth', 2);
+    plot([xdef(i) xdef(j)], [ydef(i) ydef(j)], 'Color', col, 'LineWidth', 1);
 end
 xlabel('x'); ylabel('y');
 
@@ -243,16 +325,9 @@ forskjutningxA = xnodAefter - xnodAfore
 forskjutningyA = ynodAefter - ynodAfore
 avstandA = sqrt(forskjutningxA^2 + forskjutningyA^2)
 
-% last b = -10
-% modell 1, 30 bars N=17, avstandA = 0.0680
-% modell 1, 26 bars N=15, avstandA = 0.0680
-% modell 2, 27 bars, N=15, avstandA = 0.0680
-% modell 3, 26 bars, N=15, avstandA =  0.0680
-
-%modell 1 nnz(A)=200  sum(A)=146436  cond(A)=2.76e+04
-%modell 2 nnz(A)=200  sum(A)=47133.4  cond(A)=2.76e+04
-%modell 3 nnz(A)=200  sum(A)=146436  cond(A)=2.76e+04
-% Modell 1 och 3 är lika Modell 2 skiljer något då 
-%nnz antal nollvärden i A
-%sum summan av alla värden i A
-%condest konditionstalet för A
+% last b(end) = -1
+% modell 1, 30 bars N=17, deformation avstandA = 0.0023
+% modell 2, 27 bars, N=15, deformation avstandA = 0.0068
+% modell 3, 30 bars, N=17, deformation avstandA = 0.0068
+% modell 4, 30 bars, N=17, deformation avstandA = 0.0024
+% modell 5, 30 bars, N=17, deformation avstandA = 0.0024
