@@ -16,6 +16,10 @@ ysista = 0.5;
 xmax = 1.0;
 
 % ---  Definiera Nodkoordinater -----------------------------------------
+% 1 -- 3 ---5 ---7 ---9 ---11 ---13 ---15
+%      |    |    |    |    |     |     |  \
+% 2 ---4 ---6 ---8 ---10---12 ---14 ---16 --17
+% Instabilt fackverk med lodräta stänger
 % Räkna ut x och y koordinater för noderna fördela jämnt över längden xmax
 
 nodavstandxled = xmax / ((N-1)/2) %avstånd mellan noder i x-led
@@ -115,3 +119,4 @@ title('Fackverk före och efter deformation');
 % Uppgift 2
 KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
 % jättehögt konditionstal för detta fackverk med lodräta stänger
+% Jämför med Uppgift 1 där konditionstalet var mycket lägre

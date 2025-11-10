@@ -166,7 +166,7 @@ fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverkspl
 A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
 
 A = sparse(genstiffnmatr(xnod, ynod, bars));
-fprintf('nnz(A)=%d  sum(A)=%.6g  condest(A)=%.2e\n', nnz(A), full(sum(A(:))), condest(A));
+fprintf('nnz(A)=%d  sum(A)=%.6g  condest(A)=%.2e\n', nnz(A), full(sum(A(:))), cond(A));
 
 
 % ---  Kraftvektor b (nedåt last i nod 3) ---------------------
@@ -249,10 +249,10 @@ avstandA = sqrt(forskjutningxA^2 + forskjutningyA^2)
 % modell 2, 27 bars, N=15, avstandA = 0.0680
 % modell 3, 26 bars, N=15, avstandA =  0.0680
 
-%modell 1 nnz(A)=200  sum(A)=146436  condest(A)=2.76e+04
-%modell 2 nnz(A)=200  sum(A)=47133.4  condest(A)=2.76e+04
-%modell 3 nnz(A)=200  sum(A)=146436  condest(A)=2.76e+04
+%modell 1 nnz(A)=200  sum(A)=146436  cond(A)=2.76e+04
+%modell 2 nnz(A)=200  sum(A)=47133.4  cond(A)=2.76e+04
+%modell 3 nnz(A)=200  sum(A)=146436  cond(A)=2.76e+04
 % Modell 1 och 3 är lika Modell 2 skiljer något då 
-%nnz nollvärden i A
+%nnz antal nollvärden i A
 %sum summan av alla värden i A
 %condest konditionstalet för A

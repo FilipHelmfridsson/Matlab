@@ -84,6 +84,7 @@ ylabel('Tidsåtgång [s]');
 title('CPU-tid för Gausselimination på fackverk av olika storlek');
 grid on;
 
+% Från uppgiften:
 %Om tidsåtgången lyder potenssambandet T ≈ CN^α, där T är tidsåtgången och N är antalet obekanta 
 % och C, α konstanter, så kan plottning i loglog-skala ge exponenten α som lutningen
 %av resulterande linjen. Detta följer av att ta logaritmen på båda sidor av potenssambandet, vilket ger
@@ -91,6 +92,6 @@ grid on;
 
 % Linjen blir ganska rak vilket tyder på att sambandet håller hyfsat bra.
 % Lutningen kan uppskattas med hjälp av polyfit:
-p = polyfit(log(size), log(tider), 1);
-alpha = p(1);
-fprintf('Uppskattad exponent α = %.2f\n', alpha);   
+p = polyfit(log(size), log(tider), 1); % 1 betyder linjär passning
+lutning = p(1); % Lutningen är första koefficienten
+fprintf('Uppskattad exponent α = %.2f\n', lutning);   

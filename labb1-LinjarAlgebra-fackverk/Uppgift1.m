@@ -10,7 +10,7 @@ close all   % Stänger alla figurer
 
 % -----------------Sätt startvärden -----------
 % Ange antal Noder
-N = 15; % Måste vara ojämnt antal räkna bort baren som är väggen
+N = 11; % Måste vara ojämnt antal räkna bort baren som är väggen
 % Ange yttersta nodens X värde
 ysista = 0.5;
 xmax = 1.0;
@@ -18,7 +18,7 @@ xmax = 1.0;
 % ---  Definiera Nodkoordinater -----------------------------------------
 % Räkna ut x och y koordinater för noderna fördela jämnt över längden xmax
 
-nodavstandxled = xmax / ((N-1)/2) %avstånd mellan noder i x-led
+nodavstandxled = xmax / ((N-1)/2); %avstånd mellan noder i x-led
 xnod = zeros(N,1);
 xnod(1:2) = 0; % Första och andra noden vid väggen
 for i = 3:N-1
@@ -28,8 +28,8 @@ xnod(N) = xmax; % Sista noden längst ut så inget avrundningsfel blir
 xnod
 
 % Sista nodens y-koordinat är 0.5
-nodavstandyledbaruppe = (1-ysista) / ((N-1)/2)
-nodavstandyledbarnere = (0.8-ysista) / ((N-1)/2)
+nodavstandyledbaruppe = (1-ysista) / ((N-1)/2);
+nodavstandyledbarnere = (0.8-ysista) / ((N-1)/2);
 ynod = zeros(N,1);
 ynod(1) = 1; % Första noden uppe vid väggen
 ynod(2) = 0.8; % Andra noden nere vid väggen
@@ -45,6 +45,10 @@ ynod
 
 
 % --- Bars ------------------------------------------------
+%1---3---5---7---9
+%  / | / | / | / | \
+% /  |/  |/  |/  |  \
+%2-- 4-- 6-- 8--10--11
 % Räknar ut stänger mellan noderna
 bars = [];
 for i = 1:N-2
@@ -66,53 +70,45 @@ bars(index, :) = [];
 length(bars)
 bars
 
-% --- Rita ursprungligt fackverk -----------------------------
+% --- Rita ursprungligt fackverk i blått -----------------------------
 figure; grid on; axis equal; hold on
 title('Fackverk före deformation')
 fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverksplot
 
-xnodAfore = xnod(end) % xKoordinater för nod A före deformation
-ynodAfore = ynod(end) % yKoordinater för nod A före deformation
-
 %------------ Matris för stiffnes (styvhet)  --------------------------
 A = genstiffnmatr(xnod, ynod, bars) % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
-
+size(A)
 % ---  Kraftvektor b (nedåt last i nod 3) ---------------------
-b = zeros(2*(N-2),1)       % b är kraftvektorn i noden 3 den fria noden b= [Fx;Fy] x resp y led
-% Skapar en nollmatris med nollor zeros (2,1) = [0;0]
+b = zeros(2*(N-2),1);       % b är kraftvektorn ifrån noden 3 den fria noden b= [Fx3, Fx4....FxN Fy3 Fy4.....FyN] x resp y led
+% Skapar en nollmatris med nollor zeros
 % N-2 för nod 1 och nod2 är fixerade vid väggen SÅ RÄKNAR BARA MED FRIA NODER
-% b har storlek 2*(N-2) eftersom varje nod har två frihetsgrader
+% b har storlek 2*(N-2) eftersom varje nod har två frihetsgrader x och y led
 % b betyder kraftvektor för fria noder så den börjar först vid nod 3
-b((N-2)+(N-2)) = -10 % Sätter en nedåtriktad kraft i y-led i den sista fria noden
+b((N-2)+(N-2)) = -1; % Sätter en nedåtriktad kraft i y-led i den sista fria noden
 
-% --- Lös systemet A*z = b ----------------------------------
-z = A\b; % Detta ger en lösning för z, där z är vektor med förskjutningar för fria noder
-% z = [Δx3; Δy3] för vårt lilla fackverk
+% --- Lös systemet A*z = b  Gauss lösning----------------------------------
+z = A\b % Detta ger en lösning för z, där z är vektor med förskjutningar för fria noder
+% z = [Δx3; Δy3 ...] för vårt fackverk
+size(z)
 
 % --- Förskjutningar och ny geometri -------------------------
-xdelta = zeros(N,1); ydelta = zeros(N,1);   % Skapar en nollmatris för Δx och Δy
-xdelta(3:N) = z(1:(N-2))              % Δx för fria noder
-ydelta(3:N) = z((N-2)+1:end)           % Δy för fria noder
+xdelta = zeros(N,1); 
+ydelta = zeros(N,1);   % Skapar en nollmatris för Δx och Δy med rätt storlek
+xdelta(3:N) = z(1:(N-2));              % Δx för fria noder
+ydelta(3:N) = z((N-2)+1:end);           % Δy för fria noder
 
 % Nya koordinater efter deformation
 xdef = xnod + xdelta
 ydef = ynod + ydelta
 
 % --- Rita deformerad struktur -------------------------------
+%fackverksplot(xdef, ydef, bars);
 for k = 1:size(bars,1)
     i = bars(k,1); j = bars(k,2);
     plot([xdef(i) xdef(j)], [ydef(i) ydef(j)], 'r', 'LineWidth', 1.5); % 'r' = röd
 end
-N
-plot(xdef(N),ydef(N),'*')
+plot(xdef(end),ydef(end),'*')
 title('Fackverk före och efter deformation');
 
-% Uppgift 2
+% För att jämföra med Uppgift 2
 KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
-
-%uppgift3
-%xnodAefter = xdef(end) % xKoordinater för nod A efter deformation
-%ynodAefter = ydef(end) % yKoordinater för nod A efter deformation
-%forskjutningxA = xnodAefter - xnodAfore
-%forskjutningyA = ynodAefter - ynodAfore
-%avstandA = sqrt(forskjutningxA^2 + forskjutningyA^2)
