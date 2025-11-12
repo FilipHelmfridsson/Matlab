@@ -1,20 +1,19 @@
-%=== fackverk med N noder =====
+%Stabiltaste fackverket 
 
 % För att hitta hjälpfunktioner
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk') 
 
-% --- Rensa upp ---------------------------------------------
 clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
 
-% -----------------Sätt startvärden -----------
+
 % Ange antal Noder
 N = 17; % Måste vara ojämnt antal räkna bort baren som är väggen
 
 
-% --- Bars ---Välj Modell ---------------------------------------------
-% Det visade sig att våran lutande bars inte alls är så styv
+% -Välj Modell 
+% Det visade sig att våran lutande kran inte alls är så styv
 % Dessa alternativ är bättre men Modell 1 är bäst
 modell=1;
 
@@ -164,23 +163,23 @@ ynod
 AntalBars = length(bars)
 bars
 
-% --- Rita ursprungligt fackverk -----------------------------
+% Rita ursprungligt fackverk
 figure; grid on; axis equal; hold on
-fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverksplot
+fackverksplot(xnod, ynod, bars); % 
 
-%------------ Matris för styvhet och längförskjutningar  --------------------------
-A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
+% Matris för styvhet och längförskjutningar
+A = genstiffnmatr(xnod, ynod, bars);
 
-% ---  Kraftvektor b (nedåt last i nod N) ---------------------
+%  Kraftvektor b (nedåt last i nod N)
 N = length(xnod);           % N = antal noder
-b = zeros(2*(N-2),1);       % b är kraftvektorn i fria noder b= [Fx1..  Fy1.. FyN]
+b = zeros(2*(N-2),1);       % b är kraftvektorn i fria noder
 b(end) = -1;  % nedåtriktad kraft på spetsen
 
-% --- Lös systemet A*z = b ----------------------------------
-z = A\b; % Detta ger en lösning för z, där z är vektor med förskjutningar för fria noder
+
+z = A\b; % z är då vektorn med förskjutningar för fria noder
 
 
-% --- Förskjutningar och ny geometri -------------------------
+% Förskjutningar och ny geometri
 xdelta = zeros(N,1); ydelta = zeros(N,1);   % Skapar en nollmatris för Δx och Δy
 xdelta(3:N) = z(1:(N-2));             % Δx för fria noder
 ydelta(3:N) = z((N-2)+1:end);           % Δy för fria noder
@@ -190,21 +189,19 @@ xdef = xnod + xdelta;
 ydef = ynod + ydelta;
 
 
-% --- Rita färgkodat fackverk --------------------------------
+% Rita färgkodat fackverk 
 title("Fackverk före och efter deformation Uppgift 3 Modell "+modell)
 fackverksplot(xnod, ynod, bars);
 
 %-- uppgift3 -- beräkna förskjutning av nod A
-xnodAfore = xnod(end);  % xKoordinater för nod A före deformation
-ynodAfore = ynod(end);  % yKoordinater för nod A före deformation
-xnodAefter = xdef(end); % xKoordinater för nod A efter deformation
-ynodAefter = ydef(end); % yKoordinater för nod A efter deformation
-forskjutningxA = xnodAefter - xnodAfore;
-forskjutningyA = ynodAefter - ynodAfore;
+forskjutningxA = xdef(end) - xnod(end);
+forskjutningyA = ydef(end) - ynod(end);
 avstandA = sqrt(forskjutningxA^2 + forskjutningyA^2)
 
+KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
+% 
 % last b(end) = -1
-% modell 1, 30 bars N=17, deformation avstandA = 0.0023
-% modell 2, 30 bars, N=17, deformation avstandA = 0.0024
-% modell 3, 30 bars, N=17, deformation avstandA = 0.0024
-% modell från uppgift 1, 30 bars, N=17, deformation avstandA = 0.0068
+% modell 1, 30 bars N=17, cond =  3.2344e+03,  avstandA = 0.0023
+% modell 2, 30 bars, N=17, cond = 3.8188e+03,  avstandA = 0.0024
+% modell 3, 30 bars, N=17, cond =  3.7958e+03, avstandA = 0.0024
+% modell från uppgift 1, 30 bars, N=17, cond = 1.5642e+04, avstandA = 0.0068

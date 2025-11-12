@@ -1,6 +1,6 @@
-% --- Lägg till sökvägen --------------------------------
+% Lägg till sökvägen
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk')
-% --- Rensa upp -----------------------------------------
+% Rensa upp
 clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
@@ -12,11 +12,11 @@ whos
 % skapa en vertikal last
 % Låt lasten flytta sig från från nod 126 till nod 250 och se förflyttningen
 avstand = [0,0];
-for i = 126:250
+for i = 128:250
     b = zeros(250,1);
     b(i) = -10; % applicera en last på -10 N i y-led på nod i
     z = A\b;
-    % --- Förskjutningar och ny geometri -------------------------
+    % Förskjutningar och ny geometri
     xdelta = zeros(127,1); ydelta = zeros(127,1);   % Skapar en nollmatris för Δx och Δy
     xdelta(3:127) = z(1:(127-2));              % Δx för fria noder
     ydelta(3:127) = z((127-2)+1:end);  
@@ -31,19 +31,19 @@ for i = 126:250
     forskjutningyA = ynodAefter - ynodAfore;
     avstand = [avstand, sqrt(forskjutningxA^2 + forskjutningyA^2)];
 end
-array = 1:127;
+array = 1:125;
 avstand;
 % Plotta förflyttningen av nod 125 beroende på lastens position
 figure; grid on; hold on;
-title("Förflyttningen av nod 125 beroende på lastens position Uppgift 5 kran 1")
+title("Förflyttningen av sista noden beroende på lastens position Uppgift 5 kran 1")
 plot(array, avstand, '-o');
 xlabel('Lastens position (nodnummer)');
 ylabel('Förflyttning av sista noden nodnummer 127');
 
 [max, nodMax] = max(avstand(3:end));
 [min, nodMin] = min(avstand(3:end));
-fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
-fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
+fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax)+2);
+fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin)+2);
 
-% Max förflyttning = 0.00983 vid nod 1
-% Min förflyttning = 0.00001 vid nod 102
+% Max förflyttning = 0.00983 vid nod 3
+% Min förflyttning = 0.00001 vid nod 104

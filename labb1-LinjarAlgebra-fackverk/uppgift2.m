@@ -1,25 +1,25 @@
-%=== Litet fackverk med N noder Men mer instabilt med lodräta stänger=====
+% Litet fackverk med N noder Men mer instabilt med lodräta stänger
 
 % För att hitta hjälpfunktioner
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk')
 
-% --- Rensa upp ---------------------------------------------
+
 clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
 
-% -----------------Sätt startvärden -----------
-% Ange antal Noder
+
+% Anger antal Noder
 N = 17; % Måste vara ojämnt antal räkna bort baren som är väggen
 
 
 
 
-% ---  Definiera Nodkoordinater -----------------------------------------
+% Definiera Nodkoordinater
 % 1 -- 3 ---5 ---7 ---9 ---11 ---13 ---15
 %      |    |    |    |    |     |     |  \
 % 2 ---4 ---6 ---8 ---10---12 ---14 ---16 --17
-% Instabilt fackverk med bara lodräta stänger för stöttning
+% Instabilt fackverk med bara lodräta stänger för stöttning, då trianglar ger stabilare fackverk
 
 
 xmax = 1.0;
@@ -51,44 +51,39 @@ ynod(N) = ysista; % Sista noden längst ut så inget avrundningsfel blir
 ynod
 
 
-% --- Bars ------------------------------------------------
+
 % Räknar ut stänger mellan noderna
 bars = [];
 for i = 3:N-1
     bars = [bars;i i-2]; % horisontella stänger
     if mod(i,2) == 0 % skillt från dvs jämn nod
-        bars = [bars;i i-1]; % sneda stänger uppåt
-        if i~=1
-            %bars = [bars;i i-1]; % vertikal nod uppåt
-        end
+        bars = [bars;i i-1]; % verktiala stänger uppåt
     end
 end
+
 %missar sista sneda och raka noden lägger till den här:
 bars = [bars;N-2 N];
 bars = [bars;N-1 N];
-% Tar bort bar mellan nod 1 och nod 2 (väggen)
-index = find(all(bars == [2 1], 2));
-bars(index, :) = [];
 % Skriver ut stängerna
 AntalBars=length(bars)
 bars
 
-% --- Rita ursprungligt fackverk -----------------------------
+% Rita ursprungligt fackverk 
 figure; grid on; axis equal; hold on
-fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverksplot
+fackverksplot(xnod, ynod, bars);
 
-%------------ Matris för stiffnes (styvhet)  --------------------------
-A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
 
-% ---  Kraftvektor b (nedåt last i nod 3) ---------------------
+A = genstiffnmatr(xnod, ynod, bars);
+
+% Kraftvektor b (nedåt last i sista noden)
 b = zeros(2*(N-2),1);
-b(end) = -1; % Klarar ingen last alls utan deformering
+b(end) = -0.000000000001; % Klarar ingen last alls utan deformering
 
-% --- Lös systemet A*z = b ----------------------------------
+% Lös systemet A*z = b med gaussning av datorn
 z = A\b;
 
-% --- Förskjutningar och ny geometri -------------------------
-% Skapar en nollmatrier för Δx och Δy
+% Förskjutningar och ny geometri
+% Skapar en kolumnvektorer för Δx och Δy
 xdelta = zeros(N,1); 
 ydelta = zeros(N,1);   
 xdelta(3:N) = z(1:(N-2))              % Δx för fria noder
@@ -98,11 +93,20 @@ ydelta(3:N) = z((N-2)+1:end)           % Δy för fria noder
 xdef = xnod + xdelta
 ydef = ynod + ydelta
 
-% --- Rita deformerad struktur -------------------------------
+% Rita deformerad struktur 
 fackverksplot(xdef, ydef, bars);
 title('Fackverk före och efter deformation Uppgift 2');
 
 % Uppgift 2
 KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
-% jättehögt konditionstal för detta fackverk med lodräta stänger  4.5502e+17
-% Jämför med Uppgift 1 där konditionstalet var mycket lägre  % 1.5642e+04
+% jättehögt konditionstal för detta fackverk med lodräta stänger  4.7490e+17
+% Jämfört med Uppgift 1 där konditionstalet var mycket lägre  1.5642e+04
+
+
+b_andring = zeros(2*(N-2),1); 
+b_andring(end)= b(end)*1.1
+z_andring = A\b_andring;
+
+V = (norm(z_andring - z) / norm(z)) / (norm(b_andring - b) / norm(b))
+
+

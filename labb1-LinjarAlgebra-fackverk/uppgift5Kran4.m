@@ -14,7 +14,7 @@ N=1430 % 2856/2+2 Antal noder
 % Låt lasten flytta sig
 avstand = [0,0];
 timeStart = cputime;
-for i = ceil(1429:2856)
+for i = 1431:2856
     %fprintf('%d\n', i)
     b = zeros(2*(1430-2),1);
     b(i) = -10; % applicera en last på -10 N i y-led på nod i
@@ -35,7 +35,7 @@ for i = ceil(1429:2856)
     avstand = [avstand, sqrt(forskjutningxA^2 + forskjutningyA^2)];
 end
 time = cputime - timeStart
-array = 1:1430;
+array = 1:1428;
 avstand;
 
 % Plotta förflyttningen av nod N beroende på lastens position
@@ -47,7 +47,7 @@ ylabel('Förflyttning av sista noden nodnummer N');
 
 [max, nodMax] = max(avstand(3:end));
 [min, nodMin] = min(avstand(3:end));
-fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
-fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
+fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax)+2);
+fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin)+2);
 
 % Tid 545s MAC M1

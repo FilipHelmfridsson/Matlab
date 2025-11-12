@@ -1,13 +1,13 @@
-% --- Lägg till sökvägen --------------------------------
+
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk')
-% --- Rensa upp -----------------------------------------
+
 clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
 
 load('kran4.mat')
 whos
-% -------------- LU -faktorisering ------
+%LU -faktorisering
 [L,U, P] = lu(A);
 
 %Matris storlek 2856
@@ -17,13 +17,13 @@ N=1430 % 2856/2+2 Antal noder
 % Låt lasten flytta sig
 avstand = [0,0];
 timeStart = cputime;
-for i = ceil(1429:2856)
+for i = 1431:2856 % N=1430, FriaNoder=1428, Fy1index=1429
     %fprintf('%d\n', i)
     b = zeros(2*(1430-2),1);
     b(i) = -10; % applicera en last på -10 N i y-led på nod i
     y = L\(P*b);
     z = U\y;
-    % --- Förskjutningar och ny geometri -------------------------
+    %Förskjutningar och ny geometri 
     xdelta = zeros(1430,1); ydelta = zeros(1430,1);   % Skapar en nollmatris för Δx och Δy
     xdelta(3:N) = z(1:(1430-2));              % Δx för fria noder
     ydelta(3:N) = z((1430-2)+1:end);  
@@ -39,7 +39,7 @@ for i = ceil(1429:2856)
     avstand = [avstand, sqrt(forskjutningxA^2 + forskjutningyA^2)];
 end
 time = cputime - timeStart
-array = 1:1430;
+array = 1:1428;
 avstand;
 
 % Plotta förflyttningen av nod N beroende på lastens position
@@ -49,13 +49,15 @@ plot(array, avstand, '-o');
 xlabel('Lastens position (nodnummer)');
 ylabel('Förflyttning av sista noden nodnummer N');
 
-[max, nodMax] = max(avstand(3:end));
+[max, nodMax] = max(avstand(3:end)); % Beskär min nod med 2 första därav plus 2 vid resultatet
 [min, nodMin] = min(avstand(3:end));
-fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
-fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
+fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax+2));
+fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin+2));
 
 % time = 27.25 MAC M1
-% time = 9.7300 MAC M4
 
 % Jämför utan LU
 % time = 545s MAC M1
+
+%Max förflyttning = 0.00396 vid nod 3
+%Min förflyttning = 0.00000 vid nod 672

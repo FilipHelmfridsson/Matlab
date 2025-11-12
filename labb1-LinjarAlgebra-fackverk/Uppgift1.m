@@ -99,6 +99,12 @@ fackverksplot(xdef, ydef, bars);
 KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
 % 1.5642e+04
 
+b_andring = zeros(2*(N-2),1); 
+b_andring(end)= b(end)*1.4
+z_andring = A\b_andring;
+
+V = (norm(z_andring - z) / norm(z)) / (norm(b_andring - b) / norm(b))
+
 
 % uppgift3 -  beräkna förskjutning av nod A
 forskjutningxA = xdef(end) - xnod(end);

@@ -1,8 +1,5 @@
-
-
-% --- Lägg till sökvägen --------------------------------
 addpath('Matlab/Matlab/labb1-LinjarAlgebra-fackverk')
-% --- Rensa upp -----------------------------------------
+
 clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
@@ -10,7 +7,6 @@ close all   % Stänger alla figurer
 n =100; % antal iterationer;
 
 % Kran 1
-%==============================
 load('kran1.mat')
 whos % => A Size 250x250 då 127 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
 A = sparse(A);
@@ -28,7 +24,6 @@ tider = [time/n];
 fprintf('Medeltid kran 1 = %.4f s\n', time/n);
 
 % Kran 2
-%==============================
 load('kran2.mat')
 %whos % => A Size 696x696 då 63 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
 A = sparse(A);
@@ -46,9 +41,8 @@ tider = [tider, time/n];
 fprintf('Medeltid kran 2 = %.4f s\n', time/n);
 
 % Kran 3
-%==============================
 load('kran3.mat')
-%whos % => A Size 250x250 då 127 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
+%whos % => A Size 2x250 då 127 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
 A = sparse(A);
 %Skapa en b vektor med rätt storlek
 %b = zeros(1502,1);
@@ -64,7 +58,6 @@ tider = [tider, time/n];
 fprintf('Medeltid kran 3 = %.4f s\n', time/n); 
 
 % Kran 4
-%==============================
 load('kran4.mat')
 %whos % => A Size 2856x2856 då 1429 noder -2 som sitter i väggen * 2 frihetsgrader x och y led
 A = sparse(A);
