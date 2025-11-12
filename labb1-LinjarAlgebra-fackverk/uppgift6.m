@@ -85,7 +85,7 @@ figure;
 loglog(size, tider, 'o-', 'LineWidth', 1.5);
 xlabel('Antal obekanta');
 ylabel('Tidsåtgång [s]');
-title('CPU-tid för Gausselimination på fackverk av olika storlek');
+
 grid on;
 
 size
@@ -101,6 +101,7 @@ tider
 p = polyfit(log(size), log(tider), 1) % 1 betyder linjär passning
 lutning = p(1); % Lutningen är första koefficienten
 fprintf('Uppskattad exponent α = %.2f\n', lutning);   
+title("CPU-tid för Gausselimination på fackverk av olika storlek Uppgift 6, lutning "+lutning);
 
 %Medeltid kran 1 = 0.0003 s
 %Medeltid kran 2 = 0.0005 s
