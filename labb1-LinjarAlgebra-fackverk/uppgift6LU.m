@@ -4,7 +4,7 @@ clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
 
-n =10; % antal iterationer;
+n =100; % antal iterationer;
 
 % Kran 1
 load('kran1.mat')
@@ -90,14 +90,22 @@ figure;
 loglog(size, tider, 'o-', 'LineWidth', 1.5);
 xlabel('Antal obekanta');
 ylabel('Tidsåtgång [s]');
-title("CPU-tid för Gausselimination på fackverk av olika storlek Uppgift 6 LU");
 
+% Linjen blir ganska rak vilket tyder på att sambandet håller hyfsat bra.
+% Lutningen kan uppskattas med hjälp av polyfit:
+p = polyfit(log(size), log(tider), 1) % 1 betyder linjär passning
+lutning = p(1); % Lutningen är första koefficienten
+fprintf('Uppskattad lutning α = %.2f\n', lutning);   
+title("CPU-tid för Gausselimination på fackverk av olika storlek Uppgift 6 LU, lutning "+lutning);
+
+% Går inte att få fram någon bra lutning, det går för fort
 
 % Med LU faktoriseringen
-%Medeltid kran 1 = 0.0000 s
-%Medeltid kran 2 = 0.0000 s
+%Medeltid kran 1 = 0.0001 s
+%Medeltid kran 2 = 0.0002 s
 %Medeltid kran 3 = 0.0010 s
 %Medeltid kran 4 = 0.0030 s
+
 
 
 % Utan LU faktorisering
