@@ -93,8 +93,10 @@ tider
 % Lutningen kan uppskattas med hjälp av polyfit:
 p = polyfit(log(size), log(tider), 1) % 1 betyder linjär passning
 lutning = p(1); % Lutningen är första koefficienten
-fprintf('Uppskattad exponent α = %.2f\n', lutning);   
+fprintf('Uppskattad lutning α = %.2f\n', lutning);   
 title("CPU-tid för Gausselimination på fackverk av olika storlek Uppgift 6, lutning "+lutning);
+
+% Uppskattad lutnong α = 1.12
 
 %Medeltid kran 1 = 0.0003 s
 %Medeltid kran 2 = 0.0005 s
