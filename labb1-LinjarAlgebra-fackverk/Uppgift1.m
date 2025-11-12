@@ -92,8 +92,7 @@ ydef = ynod + ydelta
 
 % Rita deformerad struktur
 title('Fackverk före och efter deformation Uppgift 1');
-fackverksplot(xdef, ydef, bars); % 'r' röd, då blå är default i funktionen fackverksplot
-
+fackverksplot(xdef, ydef, bars); 
 
 
 % För att jämföra med Uppgift 2
