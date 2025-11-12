@@ -10,4 +10,4 @@ end
 axis equal
 plot(xnod,ynod,'*')
 fill([0;0; -0.1;-0.1],[1.1;-0.1;-0.1;1.1],'g')
-%hold off
+%hold off % Vi vill behålla hold on för att kunna rita deformerat fackverk ovanpå det ursprungligt

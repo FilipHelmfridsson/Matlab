@@ -7,7 +7,7 @@ clear;      % Tar bort alla gamla variabler
 clc;        % Rensar kommandofönstret
 close all   % Stänger alla figurer
 
-n =100; % antal iterationer;
+n =10; % antal iterationer;
 
 % Kran 1
 %==============================
@@ -93,13 +93,14 @@ tider
 %log T ≈log C+ αlog N.
 
 % Linjen blir ganska rak vilket tyder på att sambandet håller hyfsat bra.
-% Lutningen kan uppskattas med hjälp av polyfit:
+% Lutningen kan uppskattas med hjälp av polyfit (googlat fram)
 p = polyfit(log(size), log(tider), 1) % 1 betyder linjär passning
 lutning = p(1); % Lutningen är första koefficienten
 fprintf('Uppskattad exponent α = %.2f\n', lutning);   
 
 
-%Medeltid kran 1 = 0.0072 s
-%Medeltid kran 2 = 0.0197 s
-%Medeltid kran 3 = 0.0817 s
-%Medeltid kran 4 = 0.3793 s
+% Medeltid kran 1 = 0.0072 s
+% Medeltid kran 2 = 0.0197 s
+% Medeltid kran 3 = 0.0817 s
+% Medeltid kran 4 = 0.3793 s
+% Lutning α = 1.44

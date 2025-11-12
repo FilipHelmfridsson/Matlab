@@ -40,6 +40,7 @@ avstand;
 
 % Plotta förflyttningen av nod N beroende på lastens position
 figure; grid on; hold on;
+title("Förflyttningen av sista noden beroende på lastens position Uppgift 5 kran 4")
 plot(array, avstand, '-o');
 xlabel('Lastens position (nodnummer)');
 ylabel('Förflyttning av sista noden nodnummer N');
@@ -49,4 +50,4 @@ ylabel('Förflyttning av sista noden nodnummer N');
 fprintf('Max förflyttning = %.5f vid nod %d\n', max, array(nodMax));
 fprintf('Min förflyttning = %.5f vid nod %d\n', min, array(nodMin));
 
-% Tid 545s
+% Tid 545s MAC M1

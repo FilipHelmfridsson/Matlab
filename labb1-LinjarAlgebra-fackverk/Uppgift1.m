@@ -10,7 +10,7 @@ close all   % Stänger alla figurer
 
 % -----------------Sätt N startvärde -----------
 % Ange antal Noder
-N = 11; % Måste vara ojämnt antal räkna bort baren som är väggen
+N = 17; % Måste vara ojämnt antal räkna bort baren som är väggen
 
 % ---  Definiera Nodkoordinater -----------------------------------------
 % Räkna ut x och y koordinater för noderna fördela jämnt över längden xmax
@@ -67,8 +67,7 @@ bars
 
 % --- Rita ursprungligt fackverk i blått -----------------------------
 figure; grid on; axis equal; hold on
-title('Fackverk före deformation')
-fackverksplot(xnod, ynod, bars);
+fackverksplot(xnod, ynod, bars); % 'b' blå är default i funktionen fackverksplot
 
 %------------ Matris för styvhet  --------------------------
 A = genstiffnmatr(xnod, ynod, bars); % Anrop av hjälpfunktion genstiffnmatr för att få en Matris A
@@ -95,11 +94,21 @@ xdef = xnod + xdelta
 ydef = ynod + ydelta
 
 % --- Rita deformerad struktur -------------------------------
-title('Fackverk före och efter deformation');
-fackverksplot(xdef, ydef, bars);
+title('Fackverk före och efter deformation Uppgift 1');
+fackverksplot(xdef, ydef, bars); % 'r' röd, då blå är default i funktionen fackverksplot
 
 
 
 % ----------  För att jämföra med Uppgift 2 ------------------------
 KontitionstalNnoderLutande = cond(A) % Konditionstalet för matris A
-% 6.4915e+03
+% 1.5642e+04
+
+
+%-- uppgift3 -- beräkna förskjutning av nod A
+xnodAfore = xnod(end);  % xKoordinater för nod A före deformation
+ynodAfore = ynod(end);  % yKoordinater för nod A före deformation
+xnodAefter = xdef(end); % xKoordinater för nod A efter deformation
+ynodAefter = ydef(end); % yKoordinater för nod A efter deformation
+forskjutningxA = xnodAefter - xnodAfore;
+forskjutningyA = ynodAefter - ynodAfore;
+avstandA = sqrt(forskjutningxA^2 + forskjutningyA^2)
