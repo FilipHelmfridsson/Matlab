@@ -17,7 +17,7 @@ size = [250];
 time=0;
 for i= 1:n
     timeStart = cputime;
-    A\b;
+    z=A\b;
     time = time + (cputime - timeStart);
 end
 tider = [time/n];
@@ -34,7 +34,7 @@ size = [size, 696];
 time=0;
 for i= 1:n
     timeStart = cputime;
-    A\b;
+    z=A\b;
     time = time + (cputime - timeStart);
 end
 tider = [tider, time/n];
@@ -51,7 +51,7 @@ size = [size, 1502];
 time=0;
 for i= 1:n
     timeStart = cputime;
-    A\b;
+    z=A\b;
     time = time + (cputime - timeStart);
 end
 tider = [tider, time/n];
@@ -68,7 +68,7 @@ size = [size, 2856];
 time=0; 
 for i= 1:n
     timeStart = cputime;
-    A\b;
+    z=A\b;
     time = time + (cputime - timeStart);
 end
 tider = [tider, time/n];
