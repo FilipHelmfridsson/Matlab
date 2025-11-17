@@ -5,7 +5,9 @@ y0 = 2;        % begynnelsevärde
 analytisk_f = @(t) (518/265)*exp(-(3/4)*t) + ...
                    (12/265)*cos(4*t) + (64/265)*sin(4*t);
 
-N_values = 2.^(0:9);   % n = 1, 2, 4, 8, ..., 512
+% N_values = 2.^(0:9);   % n = 1, 2, 4, 8, ..., 512
+
+N_values = [40,80,160,320];
 
 for i = 1:length(N_values)
     n = N_values(i);

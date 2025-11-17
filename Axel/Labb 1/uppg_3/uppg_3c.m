@@ -2,7 +2,7 @@ clear; clc;
 
 % PARAMETRAR
 T = 24;
-n_values = [320, 640, 1280];   % Antal delintervall (vi använder successiva n)
+n_values = [20, 40, 80, 160, 320, 640, 1280];   % Antal delintervall (vi använder successiva n)
 
 % Begynnelsevillkor
 y0 = 2;

@@ -17,7 +17,7 @@ for k = 1:length(n_values)
     y(1) = 2;  % begynnelsevillkor
     
     % Anropa framåt Euler
-    y_list = framat_euler(t, y, h, n);
+    y_list = bakat_euler(t, y, h, n);
     
     % Exakt fel vid t = T
     y_exact = analytisk_f(T);
