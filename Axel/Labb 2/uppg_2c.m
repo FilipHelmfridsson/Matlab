@@ -56,6 +56,7 @@ B_bast = olika_B(end);
 B_nast_bast = olika_B(end-1);
 
 % Felskattningen är skillnaden mellan de två sista beräkningarna
+% Felskattning av sekantmetoden och trapetsregeln kombinerat
 felskattning = abs(B_bast - B_nast_bast);
 
 fprintf('Slutgiltigt Beta-värde: %.10f\n', B_bast)

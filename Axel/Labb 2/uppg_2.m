@@ -36,7 +36,7 @@ disp(delta_trunk)
 disp('Kvoter:')
 disp(kvoter)
 
-% Vid 16 steg blir kvoten cirka 4, alltså har man ett 
+% Runt 16 steg blir kvoten cirka 4, alltså har man ett 
 % rätt säkert svar där, ungefär en decimal.
 
 T8 = volymer(3); % T(h/8)
