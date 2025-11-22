@@ -1,4 +1,5 @@
 clear all
+close all
 
 
 %% Uppgift 2 c) Hitta B värde så volym hos vattentorner blir 3500
