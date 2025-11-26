@@ -1,4 +1,4 @@
-B = 0.1268794;   % 0.05 ≤ B ≤ 0.4
+B = 0.2;   % 0.05 ≤ B ≤ 0.4
 
 y = @(x) (exp(-B.*x) + 0.6) .* (1 + (x/9).^3);
 
@@ -11,7 +11,7 @@ f = @(x) (y(x)).^2;
 a = 0;
 b = 26;
 
-n = [2,4,8,16,32,64,128,256,512,1024,2048];
+n = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192];
 
 volymer = zeros(size(n));
 
@@ -39,9 +39,9 @@ disp(kvoter)
 % Runt 16 steg blir kvoten cirka 4, alltså har man ett 
 % rätt säkert svar där, ungefär en decimal.
 
-T8 = volymer(3); % T(h/8)
-T16 = volymer(4); % T(h/16)
-T32 = volymer(5); % T(h/32)
+T8 = volymer(end-2); % T(h/8)
+T16 = volymer(end-1); % T(h/16)
+T32 = volymer(end); % T(h/32)
 
 delta1 = T16 - T8;
 delta2 = T32 - T16;
@@ -56,7 +56,7 @@ T32_hatt = delta2_ny + T32;
 
 delta_rich = abs(T16_hatt - T32_hatt);
 
-fprintf('Första värdet: %.6f ± %.6f\n', T32, abs(delta2));
+fprintf('Första värdet: %.6f ± %.6f\n', T32, abs(delta2_ny));
 fprintf('Bättre rich värde: %.6f ± %.6f\n', T32_hatt, delta_rich);
 
 kvot_felgranser = delta_rich / delta2;
